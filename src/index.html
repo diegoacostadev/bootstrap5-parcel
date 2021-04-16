@@ -47,11 +47,59 @@
 
   <!-- Container -->
   <main class="container">
-    <div class="starter-template text-center py-5 px-3">
+    <div class="starter-template text-center py-5 px-3 mb-5">
       <h1>Bootstrap starter template</h1>
       <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a
         mostly barebones HTML document.</p>
       <a href="#" data-bs-toggle="modal" data-bs-target="#myModal">Open Modal</a>
+    </div>
+
+    <div x-data="{open: false}">
+      <button @click="open=true" class="btn btn-primary" x-bind:aria-expanded="open.toString()">Open Dropdown</button>
+      <ul x-show.transition.in.origin.top.left="open" @click.away="open=false" class="list-unstyled p-3 bg-light">
+        <li>
+          Testing
+        </li>
+        <li>
+          Alpine
+        </li>
+      </ul>
+    </div>
+
+    <div x-data="loadData" class="my-4">
+
+      <div class="bg-light p-4 mb-4">
+        <input
+          class="form-control form-control-lg"
+          type="text" placeholder="Search...."
+          aria-label="Search employees"
+          x-ref="searchInput"
+          x-model="search"
+          x-on:keydown.window.prevent.slash="$refs.searchInput.focus()"
+        >
+      </div>
+
+      <div class="cards-list" x-init="()=>console.log(filteredData())">
+        <div class="row">
+          <template x-for="item in filteredData" :key="item">
+            <div class="col-md-3 d-flex">
+              <div class="card mb-3 shadow-sm border border-light p-3 flex-grow-1">
+                <div class="row align-items-center">
+                  <div class="col-md-4">
+                    <img class="card-img rounded-circle img-fluid" :src="`${item.profile_image}`" />
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <p class="fs-6 fw-bolder mb-2" x-text="item.employee_name + ' (' + item.employee_age + ')'"></p>
+                      <p class="text-muted mb-2" x-text="'$'+item.employee_salary/100"></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
     </div>
 
   </main><!-- /.container -->
